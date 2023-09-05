@@ -25,7 +25,7 @@ SQL Injection Types:
     - Boolean-based SQLi
         - www.random.com/app.php?id=1 ==and 1=2== (False Statement)
         - www.random.com/app.php?id=1 ==and 1=1== (True Statement)  
-            ![ced9a5745785acdaf5e4781f36cd527e.png](:/0598be8668fc400f9f7cc0cede20f3cd)
+           ![Boolean based blind](image.png)
             - Time-based SQLi
 
 <ins>**Out-of-Band (OAST):**</ins>
