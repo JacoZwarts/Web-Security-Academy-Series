@@ -29,7 +29,7 @@
             ![Boolean based blind](boolean-based-blind-sqli.png)
             - Time-based SQLi
 
-### Out-of-Band (OAST):>
+### Out-of-Band (OAST):
 
 - Triggering an out-of-band network connection to a system that you control. (Not common)
 - Protocols like DNS / HTTP
