@@ -26,7 +26,7 @@
     - Boolean-based SQLi
         - www.random.com/app.php?id=1 ==and 1=2== (False Statement)
         - www.random.com/app.php?id=1 ==and 1=1== (True Statement)  
-            ![Boolean based blind](image.png)
+            ![Boolean based blind](boolean-based-blind-sqli.png)
             - Time-based SQLi
 
 ### Out-of-Band (OAST):>
