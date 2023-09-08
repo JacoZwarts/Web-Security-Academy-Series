@@ -1,3 +1,5 @@
+SQL Injection vulnerability allowing login bypass
+
 https://www.youtube.com/watch?v=fMPvCyD2v4w&list=PLuyTk2_mYISLaZC4fVqDuW_hOk0dd5rlf&index=3
 https://portswigger.net/web-security/sql-injection/lab-login-bypass
 

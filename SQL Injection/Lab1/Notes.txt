@@ -1,3 +1,5 @@
+SQL Injection vulnerability in Where clause allowing retrieval of hidden data
+
 https://www.youtube.com/watch?v=_rCg_-gsQOA&list=PLuyTk2_mYISLaZC4fVqDuW_hOk0dd5rlf&index=3
 https://portswigger.net/web-security/sql-injection/lab-retrieve-hidden-data
 SQL Injection - product category filter.
