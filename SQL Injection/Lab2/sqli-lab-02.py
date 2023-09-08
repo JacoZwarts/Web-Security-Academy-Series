@@ -3,13 +3,12 @@ import urllib3;
 import requests;
 from bs4 import BeautifulSoup
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-#Proxies if using burp proxy: 
-#proxies = {'http': 'http://127.0.0.1:8080','https': 'http://127.0.0.1:8080'}
+
+proxies = {'http': 'http://127.0.0.1:8080', 'https': 'http://127.0.0.1:8080'}
 
 
 def get_csrf_token(s,url):
-    #r = s.get(url,verify=False,proxies=proxies) -- When using Burp Suite Proxy
-    r = s.get(url, verify=False)
+    r = s.get(url,verify=False,proxies=proxies)
     soup = BeautifulSoup(r.text, 'html.parser')
     csrf = soup.find("input")["value"] 
     return csrf
