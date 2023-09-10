@@ -2,7 +2,9 @@
 [SQLi Cheat Sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
 
 [SQL Injection](https://portswigger.net/web-security/sql-injection "SQL Injection")
-
+[OWASP – SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
+[OWASP – SQL Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
+[PentestMonkey – SQL Injection](http://pentestmonkey.net/category/cheat-sheet/sql-injection)
 ## SQL Injection Types:
 
 - In-band (Classic)
