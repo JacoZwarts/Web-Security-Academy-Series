@@ -1,0 +1,1 @@
+Querying the database type and version on Oracle

