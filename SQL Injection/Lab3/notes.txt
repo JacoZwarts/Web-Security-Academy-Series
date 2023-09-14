@@ -6,7 +6,7 @@ https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-n
 End Goal: Determine the number of columns returned by the query using the product catergory filter.
 
 Normal Url: https://0a8600be030722f581a8b240002b00e9.web-security-academy.net/filter?category=Clothing%2c+shoes+and+accessories
-Normal Url: https://0a8600be030722f581a8b240002b00e9.web-security-academy.net/filter?category='--Order By 1
+Normal Url: https://0a8600be030722f581a8b240002b00e9.web-security-academy.net/filter?category='Order By 1--
 
 To test if SQLi is an option submit ' as query parameter
 Background (Union):

