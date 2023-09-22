@@ -1,0 +1,11 @@
+Lab 11 - Blind SQL Injection with conditional responses.
+
+Goal: Use the vulnerable cookie to retrieve the administartor username and password.
+
+Steps:
+------
+1) Confirm that parameter is vulnerable to blind SQLi
+2)
+
+Analysis:
+---------
