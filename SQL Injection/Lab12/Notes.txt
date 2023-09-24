@@ -1,0 +1,9 @@
+Lab 12 - SQLi with conditional errors
+https://portswigger.net/web-security/learning-paths/sql-injection/sql-injection-error-based-sql-injection/sql-injection/blind/exploiting-blind-sql-injection-by-triggering-conditional-errors
+https://ranakhalil.teachable.com/courses/1491236/lectures/34259911
+
+
+Goal: 
+
+Analysis:
+---------
