@@ -1,0 +1,18 @@
+Lab 17 - SQL injection with filter bypass via XML encoding
+https://portswigger.net/web-security/sql-injection/lab-sql-injection-with-filter-bypass-via-xml-encoding
+
+Use Hackvertor:
+https://portswigger.net/bappstore/65033cbd2c344fbabe57ac060b5dd100
+
+Wrap input in hex_entities:
+1. Select Query
+2. Right Click and click on Extensions
+3. Click on Hackvertor
+4. Encode
+5. hex_entities
+
+Goal: Exploit SQL injection to retrieve the admin user's credentials from the users table and log into their account.
+
+Analysis:
+
+1 UNION SELECT username || '~'  || password  FROM users
